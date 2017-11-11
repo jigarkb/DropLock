@@ -59,7 +59,7 @@ class Vault(object):
         datastore_entity = model.Vault.get_by_key_name(key_name)
         if not datastore_entity:
             vault_entry_exists = False
-            datastore_entity = model.User(key_name=key_name)
+            datastore_entity = model.Vault(key_name=key_name)
 
         datastore_entity.email = json_object["email"]
         datastore_entity.owner_id = json_object["owner_id"]
