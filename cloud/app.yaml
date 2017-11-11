@@ -47,3 +47,7 @@ handlers:
 
 - url: .*
   script: main.app
+
+env_variables:
+  co_client_id = "vgw3sf4f8nq3b98i1gdfr8wpx4gpty0ska52"
+  co_secret = "eb5f6rda6v0d1ld8y4fymkudo86gorrc47cj"
