@@ -78,4 +78,10 @@ class UserHandler(webapp2.RequestHandler):
 
         user = User().get(code=auth_code)[0]
 
-        self.response.out.write("Welcome to Drop Lock, {}!".format(user.first_name.lower().title()))
+        template_variables = {
+            "first_name": user.first_name.lower().title(),
+            "send_req_url": "/".join(self.request.url.split('/')[:-2])+"/vault/generate?code="+auth_code
+                            +"&file_name=myfile.pdf&receipient_email=spencera@usc.edu"
+        }
+        page = utils.template("User-dashboard.html")
+        self.response.out.write(template.render(page, template_variables))
