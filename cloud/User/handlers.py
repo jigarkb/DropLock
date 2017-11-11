@@ -7,6 +7,7 @@ import webapp2
 
 from .models import User
 import utils
+import requests
 
 
 class UserHandler(webapp2.RequestHandler):

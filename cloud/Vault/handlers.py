@@ -7,11 +7,12 @@ import webapp2
 
 from .models import Vault
 import utils
-
+import requests
+from User import User
 
 class VaultHandler(webapp2.RequestHandler):
     def generate(self):
         pass
 
     def upload(self):
-        pass
+        user = User.get(email="")
