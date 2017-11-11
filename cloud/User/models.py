@@ -63,12 +63,13 @@ class User(object):
             datastore_entity = model.User(key_name=json_object["email"])
 
         datastore_entity.email = json_object["email"]
-        datastore_entity.first_name = json_object["first_name"]
-        datastore_entity.last_name = json_object["last_name"]
-        datastore_entity.dob = json_object["dob"]
-        datastore_entity.phone = json_object["phone"]
-        datastore_entity.address = json_object["address"]
-        datastore_entity.owner_id = json_object["owner_id"]
+        datastore_entity.first_name = json_object.get("first_name")
+        datastore_entity.last_name = json_object.get("last_name")
+        datastore_entity.dob = json_object.get("dob")
+        datastore_entity.phone = json_object.get("phone")
+        datastore_entity.address = json_object.get("address")
+        datastore_entity.owner_id = json_object.get("owner_id")
+        datastore_entity.code = json_object.get("code")
 
         return datastore_entity, user_exists
 

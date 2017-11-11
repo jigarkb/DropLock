@@ -15,4 +15,9 @@ app = webapp2.WSGIApplication([
                   handler=UserHandler,
                   handler_method='sign_in',
                   methods=['GET', 'POST']),
+
+    webapp2.Route(template='/user/dashboard',
+                  handler=UserHandler,
+                  handler_method='dashboard',
+                  methods=['GET']),
 ])

@@ -9,7 +9,7 @@ class User(db.Model):
     phone = db.StringProperty()
     address = db.TextProperty()
     owner_id = db.StringProperty()
-    code = db.TextProperty()
+    code = db.StringProperty()
 
     created_at = db.DateTimeProperty(auto_now_add=True)
     modified_at = db.DateTimeProperty(auto_now=True)
