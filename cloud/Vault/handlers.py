@@ -129,3 +129,34 @@ class VaultHandler(webapp2.RequestHandler):
             body=body_html,
             subject="{} {} asked you to Upload file to Drop Lock".format(user.first_name.lower().title(), user.last_name.lower().title())
         )
+
+    def access(self):
+        file_id = self.request.get("asset_id")
+
+        vault_entry = Vault().get(file_id=file_id)[0]
+        user = User().get(email=vault_entry.email)[0]
+        token_url = "https://api.devexhacks.com/oauth2/token?"
+        request_params = {
+            "client_id": os.environ["co_client_id"],
+            "client_secret": os.environ["co_secret"],
+            "grant_type": "client_credentials",
+        }
+        urlencoded_params = urllib.urlencode(request_params)
+        token_response = urlfetch.fetch(url=token_url + urlencoded_params, method="POST", deadline=10)
+        token_content = json.loads(token_response.content)
+        request_header = {
+            'Authorization': 'Bearer {}'.format(token_content["access_token"]),
+            'Owner-Id': user.owner_id,
+            'Accept': 'application/json;v=0'
+        }
+        print request_header
+        print token_content["access_token"]
+        url = "https://api.devexhacks.com/vault/assets/{}/raw".format(file_id)
+        response = urlfetch.fetch(
+            url=url,
+            method="GET",
+            headers=request_header
+        )
+        self.response.headers['Content-Disposition'] = "attachment; filename={}".format(vault_entry.file_name)
+        self.response.headers['Content-Type'] = 'application/octet-stream'
+        self.response.out.write(response.content)
