@@ -1,0 +1,10 @@
+*.pyc
+.idea/
+libs/
+/android/build
+/android/app/build
+*.iml
+/android/.gradle
+/android/local.properties
+/android/captures
+/android/.externalNativeBuild
