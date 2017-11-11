@@ -3,12 +3,13 @@ from google.appengine.ext import db
 
 class User(db.Model):
     email = db.EmailProperty()
-    name = db.StringProperty()
+    first_name = db.StringProperty()
+    last_name = db.StringProperty()
     dob = db.StringProperty()
     phone = db.StringProperty()
-    address_line_1 = db.TextProperty()
-    address_line_2 = db.TextProperty()
+    address = db.TextProperty()
     owner_id = db.StringProperty()
+    code = db.TextProperty()
 
     created_at = db.DateTimeProperty(auto_now_add=True)
     modified_at = db.DateTimeProperty(auto_now=True)

@@ -1,6 +1,11 @@
 from .handlers import *
 
 app = webapp2.WSGIApplication([
+    webapp2.Route(template='/user',
+                  handler=UserHandler,
+                  handler_method='user',
+                  methods=['GET']),
+
     webapp2.Route(template='/user/sign_up',
                   handler=UserHandler,
                   handler_method='sign_up',

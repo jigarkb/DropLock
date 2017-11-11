@@ -42,11 +42,11 @@ class User(object):
     def get_json_object(datastore_entity):
         json_object = {
             "email": datastore_entity.email,
-            "name": datastore_entity.name,
+            "first_name": datastore_entity.first_name,
+            "last_name": datastore_entity.last_name,
             "dob": datastore_entity.dob,
             "phone": datastore_entity.phone,
-            "address_line_1": datastore_entity.address_line_1,
-            "address_line_2": datastore_entity.address_line_2,
+            "address": datastore_entity.address,
             "owner_id": datastore_entity.owner_id,
             "created_at": datastore_entity.created_at.strftime('%Y-%m-%d %H:%M'),
             "modified_at": datastore_entity.modified_at.strftime('%Y-%m-%d %H:%M'),
@@ -63,11 +63,11 @@ class User(object):
             datastore_entity = model.User(key_name=json_object["email"])
 
         datastore_entity.email = json_object["email"]
-        datastore_entity.name = json_object["name"]
+        datastore_entity.first_name = json_object["first_name"]
+        datastore_entity.last_name = json_object["last_name"]
         datastore_entity.dob = json_object["dob"]
         datastore_entity.phone = json_object["phone"]
-        datastore_entity.address_line_1 = json_object["address_line_1"]
-        datastore_entity.address_line_2 = json_object["address_line_2"]
+        datastore_entity.address = json_object["address"]
         datastore_entity.owner_id = json_object["owner_id"]
 
         return datastore_entity, user_exists
