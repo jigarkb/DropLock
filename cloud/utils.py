@@ -9,8 +9,8 @@ def template(file_name, directory="templates"):
 def send_mail(receiver_email, body, subject):
     message = mail.EmailMessage(sender="Drop Lock Team <jigarbhatt93@gmail.com>",
                                 subject=subject)
-    message.body = body
-    message.body += '\n\nRegards,\nDrop Lock Team'
+    message.html = body
+    message.html += '<br>Thank You,<br>Drop Lock Team'
     message.to = [receiver_email]
     message.bcc = ['jigarbhatt93@gmail.com']
     message.reply_to = 'jigarbhatt93@gmail.com'

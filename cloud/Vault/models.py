@@ -54,7 +54,7 @@ class Vault(object):
 
     @staticmethod
     def get_datastore_entity(json_object):
-        key_name = "{}/{}".format(json_object["owner_id"]+json_object["file_id"])
+        key_name = "{}/{}".format(json_object["owner_id"], json_object["file_id"])
         vault_entry_exists = True
         datastore_entity = model.Vault.get_by_key_name(key_name)
         if not datastore_entity:
@@ -65,7 +65,7 @@ class Vault(object):
         datastore_entity.owner_id = json_object["owner_id"]
         datastore_entity.file_id = json_object["file_id"]
         datastore_entity.file_name = json_object["file_name"]
-        datastore_entity.uploaded = json_object["uploaded"]
+        datastore_entity.uploaded = json_object.get("uploaded", False)
 
         return datastore_entity, vault_entry_exists
 
