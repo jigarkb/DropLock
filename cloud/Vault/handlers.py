@@ -11,13 +11,53 @@ from .models import Vault
 import utils
 from User import User
 import os
+from google.appengine.ext.webapp import template
 
 
 class VaultHandler(webapp2.RequestHandler):
     def upload(self):
-        auth_code = self.request.get("code")
+        file_id = self.request.get("asset_id")
+        if self.request.method == 'GET':
+            page = utils.template("Vault-upload.html")
+            self.response.out.write(template.render(page, {"file_id":file_id}))
+            return
 
-        user = User().get(code=auth_code)[0]
+        file_content = self.request.get('file')
+        vault_entry = Vault().get(file_id=file_id)[0]
+        user = User().get(email=vault_entry.email)[0]
+        token_url = "https://api.devexhacks.com/oauth2/token?"
+        request_params = {
+            "client_id": os.environ["co_client_id"],
+            "client_secret": os.environ["co_secret"],
+            "grant_type": "client_credentials",
+        }
+        urlencoded_params = urllib.urlencode(request_params)
+        token_response = urlfetch.fetch(url=token_url + urlencoded_params, method="POST", deadline=10)
+        token_content = json.loads(token_response.content)
+        request_header = {
+            'Authorization': 'Bearer {}'.format(token_content["access_token"]),
+            'Owner-Id': user.owner_id,
+            'Content-Type': 'application/octet-stream'
+        }
+        print token_content["access_token"]
+        url = "https://api.devexhacks.com/vault/loading-dock?assetId="+file_id
+        response = urlfetch.fetch(
+            url=url,
+            payload=file_content,
+            method="PUT",
+            headers=request_header
+        )
+        print response.status_code
+        print response.content
+        vault_entry.uploaded = True
+        vault_entry.put()
+        body_html = """<a href="{}">Access your file here</a>""".format(
+            "/".join(self.request.url.split('/')[:-1]) + "/access?asset_id=" + file_id)
+        utils.send_mail(
+            receiver_email=user.email,
+            body=body_html,
+            subject="You have a new file in Drop Lock"
+        )
 
     def generate(self):
         auth_code = self.request.get("code")
@@ -74,7 +114,6 @@ class VaultHandler(webapp2.RequestHandler):
             method="POST",
             headers=request_header
         )
-        print response.content
         response_content = json.loads(response.content)
         vault_entry = Vault()
         vault_entry.add(
@@ -83,7 +122,8 @@ class VaultHandler(webapp2.RequestHandler):
             file_id=response_content["assets"][0]["assetId"],
             file_name=file_name,
         )
-        body_html = """<a href="{}">Upload here</a>""".format("/".join(self.request.url.split('/')[:-1])+"/vault/upload?asset_id="+response_content["assets"][0]["assetId"])
+        print response_content["assets"][0]["assetId"]
+        body_html = """<a href="{}">Upload here</a>""".format("/".join(self.request.url.split('/')[:-1])+"/upload?asset_id="+response_content["assets"][0]["assetId"])
         utils.send_mail(
             receiver_email=receipient_email,
             body=body_html,
