@@ -39,5 +39,11 @@ builtins:
 - appstats: on
 
 handlers:
+- url: /user/.*|^/user$
+  script: User.app
+
+- url: /vault/.*|^/vault$
+  script: Vault.app
+
 - url: .*
   script: main.app
