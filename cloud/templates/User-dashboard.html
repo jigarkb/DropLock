@@ -34,7 +34,8 @@
                         $('#output_text_id').append('Success');
 					},
 					error: function (data) {
-                         $('#output_text_id').empty().removeClass('alert alert-success');
+					    $('#loader').hide();
+                        $('#output_text_id').empty().removeClass('alert alert-success');
                         $('#output_text_id').addClass('alert alert-danger').append("Failure");
                     }
 				});
