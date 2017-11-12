@@ -29,7 +29,7 @@ class UserHandler(webapp2.RequestHandler):
             "sign_up_url": sign_up_url,
             "sign_in_url": sign_in_url
         }
-        page = utils.template("User-login.html")
+        page = utils.template("index.html")
         self.response.out.write(template.render(page, template_variables))
 
     def sign_up(self):

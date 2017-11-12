@@ -39,6 +39,12 @@ builtins:
 - appstats: on
 
 handlers:
+- url: /assets
+  static_dir: assets
+
+- url: /images
+  static_dir: images
+
 - url: /static
   static_dir: static
 
