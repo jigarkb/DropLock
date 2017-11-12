@@ -74,14 +74,21 @@ class UserHandler(webapp2.RequestHandler):
         self.redirect("/user/dashboard?code={}".format(auth_code))
 
     def dashboard(self):
+        from Vault import Vault
         auth_code = self.request.get("code")
 
         user = User().get(code=auth_code)[0]
+        vault_entries = Vault().get(email=user.email)
+        a = []
+        for vault_entry in vault_entries:
+            a.append(Vault.get_json_object(vault_entry))
 
         template_variables = {
             "first_name": user.first_name.lower().title(),
             "send_req_url": "/".join(self.request.url.split('/')[:-2])+"/vault/generate?code="+auth_code
-                            +"&file_name=myfile.pdf&receipient_email=spencera@usc.edu"
+                            +"&file_name=myfile.pdf&receipient_email=spencera@usc.edu",
+            "vault_entries": a
         }
+
         page = utils.template("User-dashboard.html")
         self.response.out.write(template.render(page, template_variables))
