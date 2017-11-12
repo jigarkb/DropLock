@@ -59,6 +59,8 @@ class VaultHandler(webapp2.RequestHandler):
             subject="You have a new file in Drop Lock"
         )
 
+        self.response.out.write("File Successfully Uploaded. Thank you!")
+
     def generate(self):
         auth_code = self.request.get("code")
         file_name = self.request.get("file_name")
