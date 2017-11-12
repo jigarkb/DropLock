@@ -3,7 +3,6 @@ package com.droplock.android;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -21,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         wvPublic.loadUrl("https://drop-lock.appspot.com");
         wvPublic.setWebViewClient(new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.toString());
-                return true;
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return false;
             }
         });
     }
